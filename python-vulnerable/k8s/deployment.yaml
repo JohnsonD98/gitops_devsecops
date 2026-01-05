@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-vulnerable
+  namespace: python-vulnerable
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-vulnerable
+  template:
+    metadata:
+      labels:
+        app: python-vulnerable
+    spec:
+      containers:
+      - name: python-vulnerable
+        image: lapuentesarah/python-vulnerable:latest
+        ports:
+        - containerPort: 5001

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-secure
+  namespace: python-secure
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-secure
+  template:
+    metadata:
+      labels:
+        app: python-secure
+    spec:
+      containers:
+      - name: python-secure
+        image: lapuentesarah/python-secure:latest
+        ports:
+        - containerPort: 5000
