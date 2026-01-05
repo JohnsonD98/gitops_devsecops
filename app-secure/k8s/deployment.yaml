@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: node-app-secure
-        image: lapuentesarah/node-app-secure:latest
+        image: lapuentesarah/node-app-secure:v2
         ports:
         - containerPort: 3000
