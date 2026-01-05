@@ -1,0 +1,38 @@
+name: CI/CD - Trivy Scan Apps
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trivy-scan:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        app:
+          - app-secure
+          - app-vulnerable
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set image name
+        run: |
+          if [ "${{ matrix.app }}" = "app-secure" ]; then
+            echo "IMAGE=lapuentesarah/node-app-secure:latest" >> $GITHUB_ENV
+            echo "FAIL_ON=HIGH,CRITICAL" >> $GITHUB_ENV
+          else
+            echo "IMAGE=lapuentesarah/node-vulnerable:latest" >> $GITHUB_ENV
+            echo "FAIL_ON=LOW,MEDIUM,HIGH,CRITICAL" >> $GITHUB_ENV
+          fi
+
+      - name: Trivy image scan
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          image-ref: ${{ env.IMAGE }}
+          severity: ${{ env.FAIL_ON }}
+          exit-code: 1
+          ignore-unfixed: false
